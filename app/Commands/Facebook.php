@@ -6,6 +6,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
+use Illuminate\Support\Str;
 
 class Facebook extends Command implements SelfHandling, ShouldBeQueued
 {
@@ -67,9 +68,8 @@ class Facebook extends Command implements SelfHandling, ShouldBeQueued
     protected function buildMessage(\App\Post $post)
     {
         if (strlen($post->headline) > 80) {
-            $messageCut = substr($post->headline, 0, 80);
-            $this->message = substr($messageCut, 0, strrpos($messageCut, ' ')) . '...';
-            $this->message .= ' http://topcuteanimals.com/' . $post->slug;
+            $this->message = Str::limit($post->headline, 80, '...');
+            $this->message .= ' ' . env('domain') . $post->slug;
         } else {
             $this->message = $post->headline . ' ' . 'http://topcuteanimals.com/' . $post->slug;
         }
