@@ -71,7 +71,7 @@ class Facebook extends Command implements SelfHandling, ShouldBeQueued
             $this->message = Str::limit($post->headline, 80, '...');
             $this->message .= ' ' . env('domain') . $post->slug;
         } else {
-            $this->message = $post->headline . ' ' . 'http://topcuteanimals.com/' . $post->slug;
+            $this->message = $post->headline . ' ' . env('domain') . $post->slug;
         }
         $this->image = $post->cloudinary_url;
     }
